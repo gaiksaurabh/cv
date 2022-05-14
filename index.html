@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saurabh Gaikwad | Resume</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="style/style.css">
+
+</head>
+
+<body>
+
+    <!-- header section starts  -->
+
+    <header>
+
+        <div class="user">
+            <img src="images/profilepic.jpg" alt="profilepic">
+            <h3 class="name">Saurabh Gaikwad</h3>
+            <p class="post">Graphic Designer & Frontend Developer</p>
+        </div>
+
+        <nav class="navbar">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <!-- header section ends -->
+
+    <div id="menu" class="fas fa-bars"></div>
+
+    <!-- home section starts  -->
+
+    <section class="home" id="home">
+
+        <h3>HI THERE !</h3>
+        <h1>I'M <span>Saurabh Gaikwad</span></h1>
+        <br>
+        <div class="text-animation">
+            <span class="text-animation-1 first-text">I'm a</span>
+            <span class="text-animation-1 sec-text"> Graphic Designer</span>
+        </div>
+
+        <script>
+            const text = document.querySelector('.sec-text');
+
+            const textLoad = () => {
+                setTimeout(() => {
+                    text.textContent = "Graphic Designer";
+                }, 0);
+                setTimeout(() => {
+                    text.textContent = "Frontend Developer";
+                }, 4000);
+                setTimeout(() => {
+                    text.textContent = "Freelancer";
+                }, 8000);
+            }
+
+            textLoad();
+            setInterval(textLoad, 12000);
+        </script>
+        <p>I am a full time graphic designer. Currently I am learning Full stack development. Till now I have completed
+            front-end development. I love to teach myself as I am a self learner.
+        </p>
+
+        <br>
+        <a href="#about"><button class="btn">About me <i class="fas fa-user"></i></button></a>
+
+    </section>
+
+    <!-- home section ends -->
+
+    <!-- about section starts  -->
+
+    <section class="about" id="about">
+
+        <h1 class="heading"> <span>About</span> me </h1>
+
+        <div class="row">
+
+            <div class="info">
+                <h3> <span> name : </span> Saurabh Gaikwad </h3>
+                <h3> <span> age : </span> 22 </h3>
+                <h3> <span> qualification : </span> BBA </h3>
+                <h3> <span> post : </span> Graphic Designer & Frontend Developer </h3>
+                <h3> <span> language : </span>marathi, hindi and english </h3>
+            </div>
+
+            <div class="counter">
+
+                <div class="box">
+                    <span>0</span>
+                    <h3>years of experience</h3>
+                </div>
+
+                <div class="box">
+                    <span>50+</span>
+                    <h3>practice porject completed</h3>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- about section ends -->
+
+    <!-- education section starts  -->
+
+    <section class="education" id="education">
+
+        <h1 class="heading"> my <span>education</span> </h1>
+
+        <div class="box-container">
+
+            <div class="box">
+                <i class="fas fa-graduation-cap"></i>
+                <span>2017</span>
+                <h3>12th</h3>
+                <p>I have completed my 12th from SSPM day school and Jr. College, Pune in 2017 in science stream.</p>
+            </div>
+
+            <div class="box">
+                <i class="fas fa-graduation-cap"></i>
+                <span>2017 - 18</span>
+                <h3>Graphic Design</h3>
+                <p>I love graphic designing. So I did Graphic Designer course in 2018 from Design Maniac. And I got A grade in the course.</p>
+            </div>
+
+            <div class="box">
+                <i class="fas fa-graduation-cap"></i>
+                <span>2020</span>
+                <h3>BBA</h3>
+                <p>I am also graduated from Bachelor of Business Administration (BBA) IN 2020. With first class.</p>
+            </div>
+
+            <div class="box">
+                <i class="fas fa-graduation-cap"></i>
+                <span>2022 - __</span>
+                <h3>Frontend Development</h3>
+                <p>This year I started learning Full stack web development. Currently I have learnt front-end development on a Udemy.</p>
+            </div>
+
+            <div class="box">
+                <i class="fas fa-graduation-cap"></i>
+                <span>2022 - __</span>
+                <h3>Python</h3>
+                <p>I have also started learning Python for data science. As I my Full stack web development course ends I will start
+                learning Python for data analytics and data science.</p>
+            </div>
+
+            <div class="box">
+                <i class="fas fa-graduation-cap"></i>
+                <span>2022 - __</span>
+                <h3>Data Science</h3>
+                <p>Data science is one of the sexiest job of 21st century. Data science is one of the most important tool for business
+                purposes.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- education section ends -->
+
+    <!-- portfolio section starts  -->
+
+    <section class="portfolio" id="portfolio">
+
+        <h1 class="heading"> my <span>portfolio</span> </h1>
+
+        <div class="box-container">
+
+            <div class="box">
+                <img src="images/design.png" alt="Graphic_design">
+            </div>
+
+            <div class="box">
+                <img src="images/html-5.png" alt="html">
+            </div>
+
+            <div class="box">
+                <img src="images/css.png" alt="css">
+            </div>
+
+            <div class="box">
+                <img src="images/js.png" alt="javascript">
+            </div>
+
+            <div class="box">
+                <img src="images/python.png" alt="python">
+            </div>
+
+            <div class="box">
+                <img src="images/data-science.png" alt="data_science">
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- portfolio section ends -->
+
+    <!-- contact section starts  -->
+
+    <section class="contact" id="contact">
+
+        <h1 class="heading"> <span>contact</span> me </h1>
+
+        <div class="row">
+
+            <div class="content">
+
+                <h3 class="title">Contact Info</h3>
+
+                <div class="info">
+                    <h3> <i class="fas fa-envelope"></i> gaiksaurabh26@gmail.com </h3>
+                    <h3> <i class="fas fa-phone"></i> +91 9139375922 </h3>
+                    <h3> <i class="fas fa-map-marker-alt"></i> Pune, Maharashtra, India - 411001. </h3>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- contact section ends -->
+
+
+    <!-- scroll top button  -->
+
+    <a href="#home" class="top">
+        <img src="images/scroll-top-img.png" alt="">
+    </a>
+
+    <!-- jquery cdn link  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- custom js file link  -->
+    <script src="script/script.js"></script>
+
+
+</body>
+
+</html>
