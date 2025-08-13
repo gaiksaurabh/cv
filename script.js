@@ -1,7 +1,7 @@
 //
 // --- IMPORTANT: PASTE YOUR GOOGLE APPS SCRIPT URL HERE ---
 //
-const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbym1fIp97v4C2FDlsudrqFdVItDXYrt9BDHRGGyhcI69jITcDsrl4Cod4Hcsn4lflZ7/exec";
 //
 // -------------------------------------------------------------
 //
