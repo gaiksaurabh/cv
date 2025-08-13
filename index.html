@@ -1,260 +1,629 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saurabh Gaikwad | Resume</title>
-
-    <!-- font awesome cdn link  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-
-    <!-- custom css file link  -->
-    <link rel="stylesheet" href="style.css">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Daily Work Entries</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- jsPDF + autoTable for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-YkG8RZC2m45qf6mINr9Y2C1j8YjzKbf3xSJ2nCq7Rw0m2hVnAqI1Zz0yX1l0hZc3hQm6gX2vEw5Lh3dYlmw9Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js" integrity="sha512-8hJ6m8uX8WfVqYgQ0wq7PpkQmP3WMQvHn9o0u1HNX3Z7CTc0/8oYH0M1Wmh4o8iC5l5k2iQmHq0YwQmXK6+6+Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #111831;
+      --muted: #8290b0;
+      --text: #e8ecf5;
+      --accent: #4f7cff;
+      --accent-2: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --border: #223056;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 10% -10%, #1b2344, var(--bg));
+      color: var(--text);
+    }
+    header {
+      padding: 16px 24px;
+      display: flex; gap: 12px; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+      position: sticky; top: 0; z-index: 5;
+    }
+    .title { font-weight: 700; letter-spacing: 0.2px; }
+    .subtle { color: var(--muted); font-size: 12px; }
+    .container { display: grid; grid-template-columns: 420px 1fr; gap: 16px; padding: 16px; }
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .panel h2 { margin: 0; padding: 16px 16px 0; font-size: 18px; }
+    .panel .content { padding: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .row { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: center; margin-bottom: 10px; }
+    label { font-size: 12px; color: var(--muted); }
+    input, select, textarea, datalist { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: #0f1530; color: var(--text); }
+    textarea { min-height: 64px; resize: vertical; }
+    input[type="checkbox"] { width: auto; transform: scale(1.1); }
+    .btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    button {
+      padding: 10px 14px; border: 1px solid var(--border); border-radius: 12px; background: #121a36; color: var(--text);
+      cursor: pointer; font-weight: 600;
+    }
+    .primary { background: var(--accent); border-color: transparent; }
+    .success { background: var(--accent-2); border-color: transparent; }
+    .warn { background: var(--warn); color: #0b1020; border-color: transparent; }
+    .danger { background: var(--danger); border-color: transparent; }
+    .ghost { background: transparent; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px dashed var(--border); padding: 8px 10px; text-align: left; font-size: 13px; }
+    th { color: var(--muted); font-weight: 600; position: sticky; top: 56px; background: #0c1226; z-index: 4; }
+    .pill { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+    .toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .footer-note { color: var(--muted); font-size: 12px; margin-top: 8px; }
+    .notice { font-size: 12px; color: var(--muted); }
+  </style>
 </head>
-
 <body>
+  <header>
+    <div>
+      <div class="title">Business Daily Work Entries</div>
+      <div class="subtle">Offline-first • Auto-saving dropdowns • PDF export by customer</div>
+    </div>
+    <div class="toolbar">
+      <select id="filterCustomer"></select>
+      <input type="date" id="filterFrom" title="From date">
+      <input type="date" id="filterTo" title="To date">
+      <button class="ghost" id="btnApplyFilter">Filter</button>
+      <button id="btnExportPDF" class="primary">Download PDF</button>
+      <button id="btnExportCSV" class="ghost">Export CSV</button>
+      <button id="btnResetAll" class="danger" title="Clear all data (lists + entries)">Reset All</button>
+    </div>
+  </header>
 
-    <!-- header section starts  -->
-
-    <header>
-
-        <div class="user">
-            <img src="profilepic.JPG" alt="profilepic">
-            <h3 class="name">Saurabh Gaikwad</h3>
-            <p class="post">Graphic Designer & Frontend Developer</p>
-        </div>
-
-        <nav class="navbar">
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#education">Education</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-
-    </header>
-
-    <!-- header section ends -->
-
-    <div id="menu" class="fas fa-bars"></div>
-
-    <!-- home section starts  -->
-
-    <section class="home" id="home">
-
-        <h3>HI THERE !</h3>
-        <h1>I'M <span>Saurabh Gaikwad</span></h1>
-        <br>
-        <div class="text-animation">
-            <span class="text-animation-1 first-text">I'm a</span>
-            <span class="text-animation-1 sec-text"> Graphic Designer</span>
-        </div>
-
-        <script>
-            const text = document.querySelector('.sec-text');
-
-            const textLoad = () => {
-                setTimeout(() => {
-                    text.textContent = "Graphic Designer";
-                }, 0);
-                setTimeout(() => {
-                    text.textContent = "Frontend Developer";
-                }, 4000);
-                setTimeout(() => {
-                    text.textContent = "Freelancer";
-                }, 8000);
-            }
-
-            textLoad();
-            setInterval(textLoad, 12000);
-        </script>
-        <p>I am a full time graphic designer. Currently I am learning Full stack development. Till now I have completed
-            front-end development. I love to teach myself as I am a self learner.
-        </p>
-
-        <br>
-        <a href="#about"><button class="btn">About me <i class="fas fa-user"></i></button></a>
-
-    </section>
-
-    <!-- home section ends -->
-
-    <!-- about section starts  -->
-
-    <section class="about" id="about">
-
-        <h1 class="heading"> <span>About</span> me </h1>
-
+  <div class="container">
+    <!-- Left: Entry form -->
+    <section class="panel" id="entryPanel">
+      <h2>New Entry</h2>
+      <div class="content">
         <div class="row">
-
-            <div class="info">
-                <h3> <span> name : </span> Saurabh Gaikwad </h3>
-                <h3> <span> age : </span> 22 </h3>
-                <h3> <span> qualification : </span> BBA </h3>
-                <h3> <span> post : </span> Graphic Designer & Frontend Developer </h3>
-                <h3> <span> language : </span>marathi, hindi and english </h3>
-            </div>
-
-            <div class="counter">
-
-                <div class="box">
-                    <span>0</span>
-                    <h3>years of experience</h3>
-                </div>
-
-                <div class="box">
-                    <span>50+</span>
-                    <h3>practice porject completed</h3>
-                </div>
-
-            </div>
-
+          <label for="date">1) Date</label>
+          <input type="date" id="date" />
         </div>
-
-    </section>
-
-    <!-- about section ends -->
-
-    <!-- education section starts  -->
-
-    <section class="education" id="education">
-
-        <h1 class="heading"> my <span>education</span> </h1>
-
-        <div class="box-container">
-
-            <div class="box">
-                <i class="fas fa-graduation-cap"></i>
-                <span>2017</span>
-                <h3>12th</h3>
-                <p>I have completed my 12th from SSPM day school and Jr. College, Pune in 2017 in science stream.</p>
-            </div>
-
-            <div class="box">
-                <i class="fas fa-graduation-cap"></i>
-                <span>2017 - 18</span>
-                <h3>Graphic Design</h3>
-                <p>I love graphic designing. So I did Graphic Designer course in 2018 from Design Maniac. And I got A grade in the course.</p>
-            </div>
-
-            <div class="box">
-                <i class="fas fa-graduation-cap"></i>
-                <span>2020</span>
-                <h3>BBA</h3>
-                <p>I am also graduated from Bachelor of Business Administration (BBA) IN 2020 with first class.</p>
-            </div>
-
-            <div class="box">
-                <i class="fas fa-graduation-cap"></i>
-                <span>2022 - __</span>
-                <h3>Frontend Development</h3>
-                <p>This year I started learning Full stack web development. Currently I have learnt front-end development on Udemy.</p>
-            </div>
-
-            <div class="box">
-                <i class="fas fa-graduation-cap"></i>
-                <span>2022 - __</span>
-                <h3>Python</h3>
-                <p>I have also started learning Python for data science. As I my Full stack web development course ends I will start
-                learning Python for data analytics and data science.</p>
-            </div>
-
-            <div class="box">
-                <i class="fas fa-graduation-cap"></i>
-                <span>2022 - __</span>
-                <h3>Data Science</h3>
-                <p>Data science is one of the sexiest job of 21st century. Data science is one of the most important tool for business
-                purposes.</p>
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- education section ends -->
-
-    <!-- portfolio section starts  -->
-
-    <section class="portfolio" id="portfolio">
-
-        <h1 class="heading"> my <span>portfolio</span> </h1>
-
-        <div class="box-container">
-
-            <div class="box">
-                <img src="design.png" alt="Graphic_design">
-            </div>
-
-            <div class="box">
-                <img src="html-5.png" alt="html">
-            </div>
-
-            <div class="box">
-                <img src="css.png" alt="css">
-            </div>
-
-            <div class="box">
-                <img src="js.png" alt="javascript">
-            </div>
-
-            <div class="box">
-                <img src="python.png" alt="python">
-            </div>
-
-            <div class="box">
-                <img src="data-science.png" alt="data_science">
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- portfolio section ends -->
-
-    <!-- contact section starts  -->
-
-    <section class="contact" id="contact">
-
-        <h1 class="heading"> <span>contact</span> me </h1>
-
         <div class="row">
-
-            <div class="content">
-
-                <h3 class="title">Contact Info</h3>
-
-                <div class="info">
-                    <h3> <i class="fas fa-envelope"></i> gaiksaurabh26@gmail.com </h3>
-                    <h3> <i class="fas fa-phone"></i> +91 9139375922 </h3>
-                    <h3> <i class="fas fa-map-marker-alt"></i> Pune, Maharashtra, India - 411001. </h3>
-                </div>
-
-            </div>
-
+          <label for="customer">2) Customer</label>
+          <input list="customers" id="customer" placeholder="Select or type new customer" />
+          <datalist id="customers"></datalist>
+        </div>
+        <div class="row">
+          <label for="jobSize">3) Job Size</label>
+          <input list="jobSizes" id="jobSize" placeholder="Select or type new size" />
+          <datalist id="jobSizes"></datalist>
+        </div>
+        <div class="row">
+          <label for="paperType">4) Paper Type</label>
+          <input list="paperTypes" id="paperType" placeholder="Select or type new paper" />
+          <datalist id="paperTypes"></datalist>
+        </div>
+        <div class="row">
+          <label>5) Quantity & F/B</label>
+          <div class="grid-2">
+            <input type="number" id="quantity" min="0" placeholder="Quantity" />
+            <label class="pill"><input type="checkbox" id="fb" /> F/B (Front/Back)</label>
+          </div>
+        </div>
+        <div class="row">
+          <label for="jobDetails">6) Job Details</label>
+          <textarea id="jobDetails" placeholder="Enter job details..."></textarea>
+        </div>
+        <div class="row">
+          <label for="ctp">7) CTP</label>
+          <select id="ctp"></select>
+        </div>
+        <div class="row">
+          <label for="paperBy">8) Paper By</label>
+          <input list="paperByList" id="paperBy" placeholder="Select or type new" />
+          <datalist id="paperByList"></datalist>
+        </div>
+        <div class="row">
+          <label for="lamination">9) Lamination</label>
+          <select id="lamination"></select>
+        </div>
+        <div class="row">
+          <label for="narration">10) Narration</label>
+          <input type="text" id="narration" placeholder="Narration" />
+        </div>
+        <div class="row">
+          <label for="laminationSize">11) Lamination Size</label>
+          <input list="lamSizes" id="laminationSize" placeholder="Select or type new" />
+          <datalist id="lamSizes"></datalist>
+        </div>
+        <div class="row">
+          <label for="envelopeSize">12) Envelope Size</label>
+          <input list="envSizes" id="envelopeSize" placeholder="Select or type new" />
+          <datalist id="envSizes"></datalist>
+        </div>
+        <div class="row">
+          <label for="ctpNo">13) CTP No.</label>
+          <input type="number" id="ctpNo" value="4" />
+        </div>
+        <div class="grid-2">
+          <div class="row">
+            <label for="cost">14) COST</label>
+            <input type="number" id="cost" min="0" step="0.01" />
+          </div>
+          <div class="row">
+            <label for="paperCost">15) PAPER COST</label>
+            <input type="number" id="paperCost" min="0" step="0.01" />
+          </div>
+          <div class="row">
+            <label for="lamiCost">16) LAMI COST</label>
+            <input type="number" id="lamiCost" min="0" step="0.01" />
+          </div>
+          <div class="row">
+            <label for="enveCost">17) ENVE COST</label>
+            <input type="number" id="enveCost" min="0" step="0.01" />
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="row">
+            <label for="received">18) RECEIVED</label>
+            <input type="number" id="received" min="0" step="0.01" />
+          </div>
+          <div class="row">
+            <label for="balAmt">19) BAL AMT</label>
+            <input type="number" id="balAmt" readonly />
+          </div>
+          <div class="row">
+            <label for="totalAmount">20) TOTAL AMOUNT</label>
+            <input type="number" id="totalAmount" readonly />
+          </div>
         </div>
 
+        <div class="btns" style="margin-top: 8px;">
+          <button id="btnSave" class="success">Save Entry</button>
+          <button id="btnClear" class="ghost">Clear Form</button>
+        </div>
+        <div class="footer-note">Date will remain constant after saving until you change it. New values typed into inputs with suggestions will be remembered for future dropdowns.</div>
+      </div>
     </section>
 
-    <!-- contact section ends -->
+    <!-- Right: Entries table -->
+    <section class="panel">
+      <h2>Entries</h2>
+      <div class="content">
+        <div class="notice" id="entriesInfo"></div>
+        <div style="overflow:auto; max-height: 70vh;">
+          <table id="entriesTable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Job Size</th>
+                <th>Paper</th>
+                <th>Qty</th>
+                <th>F/B</th>
+                <th>CTP</th>
+                <th>Paper By</th>
+                <th>Lamination</th>
+                <th>Lami Size</th>
+                <th>Env Size</th>
+                <th>CTP No.</th>
+                <th>Cost</th>
+                <th>Paper</th>
+                <th>Lami</th>
+                <th>Env</th>
+                <th>Total</th>
+                <th>Received</th>
+                <th>Balance</th>
+                <th>Details</th>
+                <th>Narration</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
 
+<script>
+// ======= Storage Helpers =======
+const LS_KEYS = {
+  entries: 'bdwe_entries_v1',
+  lists: 'bdwe_lists_v1',
+  lastDate: 'bdwe_last_date_v1'
+};
 
-    <!-- scroll top button  -->
+const defaultLists = {
+  customers: [],
+  jobSizes: [],
+  paperTypes: [],
+  ctp: ["CTP A", "CTP B", "CTP C"],
+  paperBy: ["Self", "Party"],
+  lamination: ["None", "Gloss", "Matte"],
+  lamSizes: [],
+  envSizes: []
+};
 
-    <a href="#home" class="top">
-        <img src="scroll-top-img.png" alt="">
-    </a>
+function loadEntries(){
+  return JSON.parse(localStorage.getItem(LS_KEYS.entries) || '[]');
+}
+function saveEntries(arr){
+  localStorage.setItem(LS_KEYS.entries, JSON.stringify(arr));
+}
+function loadLists(){
+  const data = JSON.parse(localStorage.getItem(LS_KEYS.lists) || 'null');
+  return data ? data : JSON.parse(JSON.stringify(defaultLists));
+}
+function saveLists(lists){
+  localStorage.setItem(LS_KEYS.lists, JSON.stringify(lists));
+}
 
-    <!-- jquery cdn link  -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+// ======= UI Bind =======
+const els = {
+  date: document.getElementById('date'),
+  customer: document.getElementById('customer'),
+  customers: document.getElementById('customers'),
+  jobSize: document.getElementById('jobSize'),
+  jobSizes: document.getElementById('jobSizes'),
+  paperType: document.getElementById('paperType'),
+  paperTypes: document.getElementById('paperTypes'),
+  quantity: document.getElementById('quantity'),
+  fb: document.getElementById('fb'),
+  jobDetails: document.getElementById('jobDetails'),
+  ctp: document.getElementById('ctp'),
+  paperBy: document.getElementById('paperBy'),
+  paperByList: document.getElementById('paperByList'),
+  lamination: document.getElementById('lamination'),
+  narration: document.getElementById('narration'),
+  laminationSize: document.getElementById('laminationSize'),
+  lamSizes: document.getElementById('lamSizes'),
+  envelopeSize: document.getElementById('envelopeSize'),
+  envSizes: document.getElementById('envSizes'),
+  ctpNo: document.getElementById('ctpNo'),
+  cost: document.getElementById('cost'),
+  paperCost: document.getElementById('paperCost'),
+  lamiCost: document.getElementById('lamiCost'),
+  enveCost: document.getElementById('enveCost'),
+  received: document.getElementById('received'),
+  balAmt: document.getElementById('balAmt'),
+  totalAmount: document.getElementById('totalAmount'),
+  btnSave: document.getElementById('btnSave'),
+  btnClear: document.getElementById('btnClear'),
+  entriesTableBody: document.querySelector('#entriesTable tbody'),
+  entriesInfo: document.getElementById('entriesInfo'),
+  filterCustomer: document.getElementById('filterCustomer'),
+  filterFrom: document.getElementById('filterFrom'),
+  filterTo: document.getElementById('filterTo'),
+  btnApplyFilter: document.getElementById('btnApplyFilter'),
+  btnExportPDF: document.getElementById('btnExportPDF'),
+  btnExportCSV: document.getElementById('btnExportCSV'),
+  btnResetAll: document.getElementById('btnResetAll')
+};
 
-    <!-- custom js file link  -->
-    <script src="script.js"></script>
+// Prefill date from last used ("constant until changed")
+(function initDate(){
+  const last = localStorage.getItem(LS_KEYS.lastDate);
+  const todayStr = new Date().toISOString().slice(0,10);
+  els.date.value = last || todayStr;
+})();
 
+// Load lists + bind to UI
+let LISTS = loadLists();
+function renderLists(){
+  function setOptions(datalistEl, arr){
+    datalistEl.innerHTML = arr.map(v => `<option value="${v}"></option>`).join('');
+  }
+  function setSelect(selectEl, arr){
+    selectEl.innerHTML = arr.map(v => `<option value="${v}">${v}</option>`).join('');
+  }
+  setOptions(els.customers, LISTS.customers);
+  setOptions(els.jobSizes, LISTS.jobSizes);
+  setOptions(els.paperTypes, LISTS.paperTypes);
+  setSelect(els.ctp, LISTS.ctp);
+  setOptions(els.paperByList, LISTS.paperBy);
+  setSelect(els.lamination, LISTS.lamination);
+  setOptions(els.lamSizes, LISTS.lamSizes);
+  setOptions(els.envSizes, LISTS.envSizes);
 
+  // Filter customer dropdown (select only)
+  els.filterCustomer.innerHTML = ['<option value="">All customers</option>']
+    .concat(LISTS.customers.map(v=>`<option value="${v}">${v}</option>`)).join('');
+}
+renderLists();
+
+// Auto-calc totals
+function toNum(v){ return Number(v || 0) || 0; }
+function recalc(){
+  const total = toNum(els.cost.value) + toNum(els.paperCost.value) + toNum(els.lamiCost.value) + toNum(els.enveCost.value);
+  els.totalAmount.value = total.toFixed(2);
+  const bal = total - toNum(els.received.value);
+  els.balAmt.value = bal.toFixed(2);
+}
+['cost','paperCost','lamiCost','enveCost','received'].forEach(id=>{
+  els[id].addEventListener('input', recalc);
+});
+recalc();
+
+// Save new entry
+els.btnSave.addEventListener('click', () => {
+  const entry = {
+    id: crypto.randomUUID(),
+    date: els.date.value,
+    customer: els.customer.value.trim(),
+    jobSize: els.jobSize.value.trim(),
+    paperType: els.paperType.value.trim(),
+    quantity: toNum(els.quantity.value),
+    fb: !!els.fb.checked,
+    jobDetails: els.jobDetails.value.trim(),
+    ctp: els.ctp.value,
+    paperBy: els.paperBy.value.trim(),
+    lamination: els.lamination.value,
+    narration: els.narration.value.trim(),
+    laminationSize: els.laminationSize.value.trim(),
+    envelopeSize: els.envelopeSize.value.trim(),
+    ctpNo: toNum(els.ctpNo.value || 4),
+    cost: toNum(els.cost.value),
+    paperCost: toNum(els.paperCost.value),
+    lamiCost: toNum(els.lamiCost.value),
+    enveCost: toNum(els.enveCost.value),
+    totalAmount: toNum(els.totalAmount.value),
+    received: toNum(els.received.value),
+    balAmt: toNum(els.balAmt.value),
+    timestamp: Date.now()
+  };
+
+  if(!entry.date || !entry.customer){
+    alert('Please enter at least Date and Customer.');
+    return;
+  }
+
+  // Update lists with any new values (auto-remember)
+  function addToList(listKey, value){
+    const v = (value || '').trim();
+    if(!v) return;
+    if(!LISTS[listKey].includes(v)){
+      LISTS[listKey].push(v);
+      LISTS[listKey].sort((a,b)=>a.localeCompare(b));
+    }
+  }
+  addToList('customers', entry.customer);
+  addToList('jobSizes', entry.jobSize);
+  addToList('paperTypes', entry.paperType);
+  addToList('paperBy', entry.paperBy);
+  addToList('lamSizes', entry.laminationSize);
+  addToList('envSizes', entry.envelopeSize);
+  saveLists(LISTS);
+  renderLists();
+
+  // Persist entry
+  const entries = loadEntries();
+  entries.push(entry);
+  saveEntries(entries);
+
+  // Remember date as constant until changed
+  localStorage.setItem(LS_KEYS.lastDate, entry.date);
+
+  // Refresh table
+  loadAndRenderTable();
+
+  // Keep date same; clear other fields
+  const keep = els.date.value;
+  document.querySelector('#entryPanel form')?.reset(); // just in case
+  els.customer.value = '';
+  els.jobSize.value = '';
+  els.paperType.value = '';
+  els.quantity.value = '';
+  els.fb.checked = false;
+  els.jobDetails.value = '';
+  els.paperBy.value = '';
+  els.narration.value = '';
+  els.laminationSize.value = '';
+  els.envelopeSize.value = '';
+  els.ctpNo.value = 4;
+  els.cost.value = '';
+  els.paperCost.value = '';
+  els.lamiCost.value = '';
+  els.enveCost.value = '';
+  els.received.value = '';
+  els.totalAmount.value = '0.00';
+  els.balAmt.value = '0.00';
+  els.date.value = keep;
+});
+
+els.btnClear.addEventListener('click', () => {
+  const keep = els.date.value;
+  document.querySelectorAll('#entryPanel input, #entryPanel textarea, #entryPanel select').forEach(el=>{
+    if(el.id !== 'date'){
+      if(el.type === 'checkbox') el.checked = false; else el.value = '';
+    }
+  });
+  els.ctpNo.value = 4;
+  els.lamination.value = LISTS.lamination[0] || '';
+  els.ctp.value = LISTS.ctp[0] || '';
+  els.date.value = keep;
+  recalc();
+});
+
+// Render table with filters
+function loadAndRenderTable(){
+  const entries = loadEntries();
+  const fc = els.filterCustomer.value;
+  const from = els.filterFrom.value ? new Date(els.filterFrom.value).getTime() : null;
+  const to = els.filterTo.value ? new Date(els.filterTo.value).getTime() + (24*60*60*1000 - 1) : null; // inclusive
+
+  const filtered = entries.filter(e => {
+    if(fc && e.customer !== fc) return false;
+    const t = new Date(e.date).getTime();
+    if(from && t < from) return false;
+    if(to && t > to) return false;
+    return true;
+  });
+
+  els.entriesInfo.textContent = `${filtered.length} entr${filtered.length===1?'y':'ies'} shown` + (fc?` for ${fc}`:'');
+
+  els.entriesTableBody.innerHTML = filtered.map(e => `
+    <tr>
+      <td>${e.date}</td>
+      <td>${escapeHtml(e.customer)}</td>
+      <td>${escapeHtml(e.jobSize)}</td>
+      <td>${escapeHtml(e.paperType)}</td>
+      <td>${e.quantity}</td>
+      <td>${e.fb ? 'Yes' : 'No'}</td>
+      <td>${escapeHtml(e.ctp)}</td>
+      <td>${escapeHtml(e.paperBy)}</td>
+      <td>${escapeHtml(e.lamination)}</td>
+      <td>${escapeHtml(e.laminationSize)}</td>
+      <td>${escapeHtml(e.envelopeSize)}</td>
+      <td>${e.ctpNo}</td>
+      <td>${e.cost.toFixed(2)}</td>
+      <td>${e.paperCost.toFixed(2)}</td>
+      <td>${e.lamiCost.toFixed(2)}</td>
+      <td>${e.enveCost.toFixed(2)}</td>
+      <td>${e.totalAmount.toFixed(2)}</td>
+      <td>${e.received.toFixed(2)}</td>
+      <td>${e.balAmt.toFixed(2)}</td>
+      <td title="Job Details">${escapeHtml(e.jobDetails)}</td>
+      <td>${escapeHtml(e.narration)}</td>
+      <td><button class="ghost" onclick="deleteEntry('${e.id}')">Delete</button></td>
+    </tr>
+  `).join('');
+}
+
+function escapeHtml(s){
+  return (s||'').replace(/[&<>"']/g, (c)=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'
+  })[c]);
+}
+
+window.deleteEntry = function(id){
+  if(!confirm('Delete this entry?')) return;
+  const entries = loadEntries().filter(e=>e.id!==id);
+  saveEntries(entries);
+  loadAndRenderTable();
+};
+
+// Filter
+els.btnApplyFilter.addEventListener('click', loadAndRenderTable);
+[els.filterCustomer, els.filterFrom, els.filterTo].forEach(el=> el.addEventListener('change', loadAndRenderTable));
+
+// Export PDF for current filter
+els.btnExportPDF.addEventListener('click', () => {
+  const entries = collectFiltered();
+  if(entries.length === 0){ alert('No entries to export.'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  const marginX = 28, marginY = 28;
+  const title = `Work Entries${els.filterCustomer.value? ' - ' + els.filterCustomer.value : ''}`;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
+  doc.text(title, marginX, marginY);
+
+  // Columns (choose compact set for PDF)
+  const columns = [
+    { header: 'Date', dataKey: 'date' },
+    { header: 'Customer', dataKey: 'customer' },
+    { header: 'Job Size', dataKey: 'jobSize' },
+    { header: 'Paper', dataKey: 'paperType' },
+    { header: 'Qty', dataKey: 'quantity' },
+    { header: 'CTP', dataKey: 'ctp' },
+    { header: 'Total', dataKey: 'totalAmount' },
+    { header: 'Received', dataKey: 'received' },
+    { header: 'Balance', dataKey: 'balAmt' },
+    { header: 'Narration', dataKey: 'narration' }
+  ];
+  const rows = entries.map(e => ({
+    ...e,
+    totalAmount: e.totalAmount.toFixed(2),
+    received: e.received.toFixed(2),
+    balAmt: e.balAmt.toFixed(2)
+  }));
+
+  doc.autoTable({
+    startY: marginY + 12,
+    head: [columns.map(c=>c.header)],
+    body: rows.map(r => columns.map(c => String(r[c.dataKey] ?? ''))),
+    styles: { fontSize: 9, cellPadding: 3 },
+    headStyles: { fillColor: [79, 124, 255], textColor: 255 },
+    alternateRowStyles: { fillColor: [245, 247, 255] },
+    didDrawPage: (data)=>{
+      // Footer total
+    }
+  });
+
+  const total = entries.reduce((s,e)=>s+e.totalAmount,0);
+  const received = entries.reduce((s,e)=>s+e.received,0);
+  const bal = entries.reduce((s,e)=>s+e.balAmt,0);
+  doc.setFont('helvetica','bold'); doc.setFontSize(11);
+  const summary = `TOTAL: ${total.toFixed(2)}   RECEIVED: ${received.toFixed(2)}   BALANCE: ${bal.toFixed(2)}`;
+  doc.text(summary, marginX, doc.lastAutoTable ? doc.lastAutoTable.finalY + 18 : 100);
+
+  const nameParts = [
+    'Entries',
+    els.filterCustomer.value || 'All',
+    els.filterFrom.value || '',
+    els.filterTo.value || ''
+  ].filter(Boolean).join('_');
+  doc.save(`${nameParts}.pdf`);
+});
+
+function collectFiltered(){
+  const entries = loadEntries();
+  const fc = els.filterCustomer.value;
+  const from = els.filterFrom.value ? new Date(els.filterFrom.value).getTime() : null;
+  const to = els.filterTo.value ? new Date(els.filterTo.value).getTime() + (24*60*60*1000 - 1) : null;
+  return entries.filter(e => {
+    if(fc && e.customer !== fc) return false;
+    const t = new Date(e.date).getTime();
+    if(from && t < from) return false;
+    if(to && t > to) return false;
+    return true;
+  });
+}
+
+// Export CSV for current filter
+els.btnExportCSV.addEventListener('click', () => {
+  const entries = collectFiltered();
+  if(entries.length === 0){ alert('No entries to export.'); return; }
+  const headers = [
+    'Date','Customer','Job Size','Paper Type','Quantity','F/B','Job Details','CTP','Paper By','Lamination','Narration','Lamination Size','Envelope Size','CTP No.','COST','PAPER COST','LAMI COST','ENVE COST','TOTAL AMOUNT','RECEIVED','BAL AMT'
+  ];
+  const rows = entries.map(e=>[
+    e.date, e.customer, e.jobSize, e.paperType, e.quantity, e.fb?'Yes':'No', e.jobDetails, e.ctp, e.paperBy, e.lamination, e.narration, e.laminationSize, e.envelopeSize, e.ctpNo, e.cost, e.paperCost, e.lamiCost, e.enveCost, e.totalAmount, e.received, e.balAmt
+  ]);
+  const csv = [headers, ...rows].map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'entries.csv'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+// Reset all (careful)
+els.btnResetAll.addEventListener('click', () => {
+  if(!confirm('This will clear ALL entries and ALL dropdown lists. Continue?')) return;
+  localStorage.removeItem(LS_KEYS.entries);
+  localStorage.removeItem(LS_KEYS.lists);
+  // Keep last date
+  LISTS = JSON.parse(JSON.stringify(defaultLists));
+  saveLists(LISTS);
+  renderLists();
+  loadAndRenderTable();
+});
+
+// Initial render
+loadAndRenderTable();
+
+</script>
 </body>
-
 </html>
